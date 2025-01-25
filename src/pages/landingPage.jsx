@@ -181,7 +181,7 @@ const LandingPage = () => {
         </div>
       </div>
 
-      <footer className="bg-blue-800 text-white py-4 text-center">
+      <footer className="bg-blue-800 text-white py-4 text-center mb-9">
         <p>© 2024 Saylani Welfare Microfinance. All Rights Reserved.</p>
       </footer>
     </div>
