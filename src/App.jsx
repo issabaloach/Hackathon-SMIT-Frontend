@@ -7,13 +7,14 @@ import UserLayout from './layouts/userLayout';
 import AdminLayout from './layouts/adminLayout';
 
 // Import Pages
-import LandingPage from './pages/landingPage.jsx';
+
 import LoginPage from './pages/loginPage';
 import RegisterPage from './pages/register';
 import UserDashboard from './pages/userDashboard';
 import AdminDashboard from './pages/adminDashboard';
 import LoanRequestForm from './components/loanForm';
 import GuarantorForm from './components/guarantorForm';
+import LandingPage from './pages/landingPage';
 
 const App = () => {
   return (
