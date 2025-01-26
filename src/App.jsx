@@ -7,14 +7,14 @@ import UserLayout from './layouts/userLayout';
 import AdminLayout from './layouts/adminLayout';
 
 // Import Pages
-
+import LandingPage from './pages/landingPage';
 import LoginPage from './pages/loginPage';
 import RegisterPage from './pages/register';
 import UserDashboard from './pages/userDashboard';
 import AdminDashboard from './pages/adminDashboard';
 import LoanRequestForm from './components/loanForm';
 import GuarantorForm from './components/guarantorForm';
-import LandingPage from './pages/landingPage';
+
 
 const App = () => {
   return (
@@ -22,7 +22,7 @@ const App = () => {
       <Router>
         <Routes>
           {/* Public Routes */}
-          <LandingPage/>
+          <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
 
