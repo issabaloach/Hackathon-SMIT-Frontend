@@ -35,7 +35,7 @@ const LoanCategories = [
   }
 ];
 
-const LandingPage = () => {
+const landingPage = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
   const [loanAmount, setLoanAmount] = useState(0);
@@ -188,4 +188,4 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+export default landingPage;
