@@ -7,7 +7,7 @@ import UserLayout from './layouts/userLayout';
 import AdminLayout from './layouts/adminLayout';
 
 // Import Pages
-import LandingPage from './pages/LandingPage';
+import LandingPage from './pages/landingPage';
 import LoginPage from './pages/loginPage';
 import RegisterPage from './pages/register';
 import UserDashboard from './pages/userDashboard';
