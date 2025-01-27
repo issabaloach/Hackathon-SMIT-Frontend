@@ -1,12 +1,8 @@
-import React, { useState } from 'react';
-import { Select, InputNumber, Button, Card, Carousel } from 'antd';
-import { 
-  BankOutlined, 
-  CalculatorOutlined, 
-  InfoCircleOutlined 
-} from '@ant-design/icons';
-
-const { Option } = Select;
+import React from 'react';
+import { BankOutlined } from '@ant-design/icons';
+import { Card, Carousel } from 'antd';
+import Header from '../components/header';
+import Footer from '../components/footer';
 
 const LoanCategories = [
   {
@@ -36,55 +32,32 @@ const LoanCategories = [
 ];
 
 const LandingPage = () => {
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedSubcategory, setSelectedSubcategory] = useState(null);
-  const [loanAmount, setLoanAmount] = useState(0);
-  const [initialDeposit, setInitialDeposit] = useState(0);
-  const [loanPeriod, setLoanPeriod] = useState(1);
-  const [calculatedLoan, setCalculatedLoan] = useState(null);
-
-  const calculateLoan = () => {
-    if (!selectedCategory || !loanAmount) return;
-
-    const category = LoanCategories.find(cat => cat.name === selectedCategory);
-    const monthlyInterestRate = 0.01; // 1% monthly rate
-    const totalMonths = loanPeriod * 12;
-
-    const principalAmount = loanAmount - initialDeposit;
-    const monthlyPayment = principalAmount * 
-      (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, totalMonths)) / 
-      (Math.pow(1 + monthlyInterestRate, totalMonths) - 1);
-
-    setCalculatedLoan({
-      monthlyPayment: Math.round(monthlyPayment),
-      totalPayment: Math.round(monthlyPayment * totalMonths),
-      interestPaid: Math.round(monthlyPayment * totalMonths - principalAmount)
-    });
-  };
-
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-blue-600 text-white py-6 text-center">
-        <h1 className="text-3xl font-bold">Saylani Welfare Microfinance</h1>
-        <p className="mt-2">Empowering Dreams, Transforming Lives</p>
+    <div className="cotainer mx-auto px-2 bg-gradient-to-b from-blue-50 to-white">
+      <header className="text-center">
+        <Header />
       </header>
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid md:grid-cols-2 gap-8">
-          {/* Loan Categories Carousel */}
+      <div className="">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-extrabold text-blue-700">Saylani Welfare Microfinance</h1>
+          <p className="mt-2 text-lg text-gray-600">Empowering Dreams, Transforming Lives</p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-12">
           <div>
             <Carousel autoplay>
               {LoanCategories.map((category, index) => (
                 <Card 
                   key={index} 
-                  className="p-4 bg-white rounded-lg shadow-md"
+                  className="p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300"
                 >
                   <div className="flex items-center">
-                    <BankOutlined className="text-4xl text-blue-600 mr-4" />
+                    <BankOutlined className="text-5xl text-blue-600 mr-6" />
                     <div>
-                      <h3 className="text-xl font-semibold">{category.name}</h3>
-                      <p>Max Loan: {category.maxLoan ? `PKR ${category.maxLoan.toLocaleString()}` : 'Variable'}</p>
-                      <p>Loan Period: {category.period} Years</p>
+                      <h3 className="text-2xl font-semibold text-gray-800">{category.name}</h3>
+                      <p className="mt-2 text-gray-600">Max Loan: {category.maxLoan ? `PKR ${category.maxLoan.toLocaleString()}` : 'Variable'}</p>
+                      <p className="text-gray-600">Loan Period: {category.period} Years</p>
                     </div>
                   </div>
                 </Card>
@@ -92,98 +65,28 @@ const LandingPage = () => {
             </Carousel>
           </div>
 
-          {/* Loan Calculator */}
-          <Card 
-            title={
-              <div className="flex items-center">
-                <CalculatorOutlined className="mr-2" /> 
-                Loan Calculator
+          <div className="flex flex-col justify-center text-center bg-blue-100 rounded-2xl p-10 shadow-lg">
+            <h2 className="text-2xl font-bold text-blue-700 mb-6">Why Choose Us?</h2>
+            <p className="text-gray-700 mb-6">At Saylani Welfare Microfinance, we offer tailored financial solutions to help you achieve your dreams, whether it's building your home, starting a business, or pursuing education. Join us in transforming lives and communities.</p>
+            <div className="space-y-6">
+              <div className="flex items-center justify-center">
+                <span className="text-blue-600 text-3xl mr-4">✓</span>
+                <p className="text-gray-700">Flexible Loan Options</p>
               </div>
-            }
-            className="bg-white rounded-lg shadow-md"
-          >
-            <div className="space-y-4">
-              <Select
-                style={{ width: '100%' }}
-                placeholder="Select Loan Category"
-                onChange={(value) => {
-                  setSelectedCategory(value);
-                  setSelectedSubcategory(null);
-                }}
-              >
-                {LoanCategories.map(category => (
-                  <Option key={category.name} value={category.name}>
-                    {category.name}
-                  </Option>
-                ))}
-              </Select>
-
-              {selectedCategory && (
-                <Select
-                  style={{ width: '100%' }}
-                  placeholder="Select Subcategory"
-                  onChange={setSelectedSubcategory}
-                >
-                  {LoanCategories
-                    .find(cat => cat.name === selectedCategory)
-                    .subcategories.map(sub => (
-                      <Option key={sub} value={sub}>{sub}</Option>
-                    ))
-                  }
-                </Select>
-              )}
-
-              <InputNumber
-                style={{ width: '100%' }}
-                placeholder="Loan Amount"
-                formatter={value => `PKR ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                parser={value => value.replace(/PKR\s?|(,*)/g, '')}
-                onChange={setLoanAmount}
-              />
-
-              <InputNumber
-                style={{ width: '100%' }}
-                placeholder="Initial Deposit"
-                formatter={value => `PKR ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                parser={value => value.replace(/PKR\s?|(,*)/g, '')}
-                onChange={setInitialDeposit}
-              />
-
-              <Select
-                style={{ width: '100%' }}
-                placeholder="Loan Period (Years)"
-                onChange={setLoanPeriod}
-              >
-                {[1, 2, 3, 4, 5].map(year => (
-                  <Option key={year} value={year}>{year} Year{year > 1 ? 's' : ''}</Option>
-                ))}
-              </Select>
-
-              <Button 
-                type="primary" 
-                block 
-                onClick={calculateLoan}
-                disabled={!selectedCategory || !selectedSubcategory || !loanAmount}
-              >
-                Calculate Loan
-              </Button>
-
-              {calculatedLoan && (
-                <div className="mt-4 bg-blue-50 p-4 rounded-lg">
-                  <h4 className="text-lg font-semibold mb-2">Loan Breakdown</h4>
-                  <p>Monthly Payment: PKR {calculatedLoan.monthlyPayment.toLocaleString()}</p>
-                  <p>Total Payment: PKR {calculatedLoan.totalPayment.toLocaleString()}</p>
-                  <p>Total Interest: PKR {calculatedLoan.interestPaid.toLocaleString()}</p>
-                </div>
-              )}
+              <div className="flex items-center justify-center">
+                <span className="text-blue-600 text-3xl mr-4">✓</span>
+                <p className="text-gray-700">Low Interest Rates</p>
+              </div>
+              <div className="flex items-center justify-center">
+                <span className="text-blue-600 text-3xl mr-4">✓</span>
+                <p className="text-gray-700">Quick and Transparent Process</p>
+              </div>
             </div>
-          </Card>
+          </div>
         </div>
       </div>
 
-      <footer className="bg-blue-800 text-white py-4 text-center mb-9">
-        <p>© 2024 Saylani Welfare Microfinance. All Rights Reserved.</p>
-      </footer>
+      <Footer />
     </div>
   );
 };

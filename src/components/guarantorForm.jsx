@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, Select } from 'antd';
 import { UserOutlined, MailOutlined, EnvironmentOutlined, IdcardOutlined } from '@ant-design/icons';
+import Header from './header';
 
 const { Option } = Select;
 
@@ -13,7 +14,8 @@ const GuarantorForm = ({ onSubmit }) => {
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
+    <div className="container mx-auto px-3">
+      <Header/>
       <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Guarantor Information</h2>
       <Form
         form={form}

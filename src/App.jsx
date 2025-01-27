@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { ConfigProvider } from 'antd';
 
 // Import Layouts
 import UserLayout from './layouts/userLayout';
@@ -14,6 +13,8 @@ import UserDashboard from './pages/userDashboard';
 import AdminDashboard from './pages/adminDashboard';
 import LoanRequestForm from './components/loanForm';
 import GuarantorForm from './components/guarantorForm';
+import LoanCalculator from './components/loanCalculator';
+import QRCodeSlip from './components/QRcodeSlip';
 
 
 const App = () => {
@@ -21,7 +22,7 @@ const App = () => {
       <Router>
         <Routes>
           {/* Public Routes */}
-          <Route path="/homepage" element={<LandingPage />} />
+          <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
 
@@ -59,6 +60,24 @@ const App = () => {
                 <AdminDashboard />
               </AdminLayout>
             } 
+          />
+
+          <Route path='/calculator'
+          element={
+            <LoanCalculator/>
+          }
+          />
+           <Route path='/loanform'
+          element={
+            <LoanRequestForm>
+              <QRCodeSlip/>
+            </LoanRequestForm>
+          }
+          />
+           <Route path='/guarantorform'
+          element={
+            <GuarantorForm/>
+          }
           />
 
           {/* Catch-all Redirect */}

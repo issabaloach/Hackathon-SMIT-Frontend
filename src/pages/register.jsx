@@ -15,7 +15,7 @@ const RegisterPage = () => {
     try {
       console.log("Registration values:", values)
       message.success("Registration Successful")
-      navigate("/homepage")
+      navigate("/")
     } catch (error) {
       message.error("Registration Failed")
     } finally {

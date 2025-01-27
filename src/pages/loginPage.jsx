@@ -15,7 +15,7 @@ const LoginPage = () => {
       await new Promise((resolve) => setTimeout(resolve, 1500))
       console.log("Login values:", values)
       message.success("Login Successful")
-      navigate("/homepage") // Navigate to home page after successful login
+      navigate("/") // Navigate to home page after successful login
     } catch (error) {
       console.error("Login failed:", error)
       message.error("Login Failed")

@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import { Form, Select, Input, Button, Upload, message } from 'antd';
 import { 
   BankOutlined, 
-  UserOutlined, 
-  HomeOutlined, 
+  DollarOutlined,
+  ClockCircleOutlined,
   FileTextOutlined, 
   UploadOutlined 
 } from '@ant-design/icons';
-
+import Header from './header';
 const { Option } = Select;
+const { TextArea } = Input;
 
-const LoanRequestForm = ({ onSubmit }) => {
+const LoanRequestForm = () => {
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState([]);
 
@@ -26,18 +27,13 @@ const LoanRequestForm = ({ onSubmit }) => {
       ...values,
       supportingDocuments: fileList.map(file => file.name)
     };
-    onSubmit(formData);
+    console.log('Form submitted:', formData);
+    message.success('Loan request submitted successfully!');
   };
 
   const handleFileUpload = (info) => {
     let newFileList = [...info.fileList];
-    newFileList = newFileList.slice(-2);
-    newFileList = newFileList.map(file => {
-      if (file.response) {
-        file.url = file.response.url;
-      }
-      return file;
-    });
+    newFileList = newFileList.slice(-2); // Keep only last 2 files
     setFileList(newFileList);
 
     if (info.file.status === 'done') {
@@ -47,9 +43,18 @@ const LoanRequestForm = ({ onSubmit }) => {
     }
   };
 
+  const validateLoanPeriod = (_, value) => {
+    if (value && (value < 1 || value > 5)) {
+      return Promise.reject('Loan period must be between 1-5 years');
+    }
+    return Promise.resolve();
+  };
+
   return (
-    <div className="w-full max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Loan Request Form</h2>
+    <div className="container mx-auto px-3">
+      <Header/>
+      <h2 className="text-2xl font-bold mb-3 text-center text-gray-800">Loan Request Form</h2>
+      
       <Form
         form={form}
         layout="vertical"
@@ -62,9 +67,10 @@ const LoanRequestForm = ({ onSubmit }) => {
             label="Loan Category"
             rules={[{ required: true, message: 'Please select a loan category' }]}
           >
-            <Select 
-              placeholder="Select Loan Category" 
-              prefix={<BankOutlined className="text-gray-400" />}
+            <Select
+              placeholder="Select Loan Category"
+              className="w-full"
+              suffixIcon={<BankOutlined className="text-gray-400" />}
             >
               {Object.keys(loanCategories).map(category => (
                 <Option key={category} value={category}>{category}</Option>
@@ -78,8 +84,9 @@ const LoanRequestForm = ({ onSubmit }) => {
             dependencies={['loanCategory']}
             rules={[{ required: true, message: 'Please select a loan subcategory' }]}
           >
-            <Select 
+            <Select
               placeholder="Select Loan Subcategory"
+              className="w-full"
               disabled={!form.getFieldValue('loanCategory')}
             >
               {form.getFieldValue('loanCategory') && 
@@ -97,13 +104,14 @@ const LoanRequestForm = ({ onSubmit }) => {
             label="Loan Amount"
             rules={[
               { required: true, message: 'Please input loan amount' },
-              { type: 'number', min: 1, message: 'Loan amount must be positive' }
             ]}
           >
-            <Input 
-              type="number" 
-              prefix={<span className="text-gray-400">PKR</span>} 
+            <Input
+              type="number"
+              prefix={<DollarOutlined className="text-gray-400" />}
               placeholder="Enter loan amount"
+              className="w-full"
+              addonBefore="PKR"
             />
           </Form.Item>
 
@@ -111,14 +119,15 @@ const LoanRequestForm = ({ onSubmit }) => {
             name="loanPeriod"
             label="Loan Period (Years)"
             rules={[
-              { required: true, message: 'Please select loan period' },
-              { type: 'number', min: 1, max: 5, message: 'Loan period must be between 1-5 years' }
+              { required: true, message: 'Please input loan period' },
+              { validator: validateLoanPeriod }
             ]}
           >
-            <Input 
-              type="number" 
-              prefix={<FileTextOutlined className="text-gray-400" />} 
-              placeholder="Enter loan period"
+            <Input
+              type="number"
+              prefix={<ClockCircleOutlined className="text-gray-400" />}
+              placeholder="Enter loan period (1-5 years)"
+              className="w-full"
             />
           </Form.Item>
         </div>
@@ -126,14 +135,18 @@ const LoanRequestForm = ({ onSubmit }) => {
         <Form.Item
           name="supportingDocuments"
           label="Supporting Documents (Optional)"
+          extra="Maximum 2 files allowed"
         >
           <Upload
             multiple
-            beforeUpload={() => false}
-            onChange={handleFileUpload}
             fileList={fileList}
+            onChange={handleFileUpload}
+            beforeUpload={() => false}
+            className="w-full"
           >
-            <Button icon={<UploadOutlined />}>Upload Documents</Button>
+            <Button icon={<UploadOutlined />} className="w-full md:w-auto">
+              Click to Upload
+            </Button>
           </Upload>
         </Form.Item>
 
@@ -141,20 +154,24 @@ const LoanRequestForm = ({ onSubmit }) => {
           name="additionalNotes"
           label="Additional Notes"
         >
-          <Input.TextArea 
-            rows={4} 
+          <TextArea
+            rows={4}
             placeholder="Any additional information about your loan request"
+            prefix={<FileTextOutlined className="text-gray-400" />}
+            className="w-full"
           />
         </Form.Item>
 
-        <Form.Item className="text-center">
-          <Button 
-            type="primary" 
-            htmlType="submit" 
-            className="w-full md:w-auto px-8 py-2 bg-blue-600 hover:bg-blue-700 transition-colors"
-          >
-            Submit Loan Request
-          </Button>
+        <Form.Item className="mb-0">
+          <div className="flex justify-center">
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="w-full md:w-auto px-8 bg-blue-600 hover:bg-blue-700"
+            >
+              Submit Loan Request
+            </Button>
+          </div>
         </Form.Item>
       </Form>
     </div>
