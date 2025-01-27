@@ -69,14 +69,18 @@ const App = () => {
           />
            <Route path='/loanform'
           element={
-            <LoanRequestForm>
-              <QRCodeSlip/>
-            </LoanRequestForm>
+            <LoanRequestForm/>
           }
+
           />
            <Route path='/guarantorform'
           element={
             <GuarantorForm/>
+          }
+          />
+           <Route path='/qrcodeslip'
+          element={
+            <QRCodeSlip/>
           }
           />
 

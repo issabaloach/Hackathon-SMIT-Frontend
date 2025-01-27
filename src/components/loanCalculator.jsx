@@ -212,5 +212,4 @@ const LoanCalculator = () => {
     </div>
   );
 };
-
 export default LoanCalculator;
