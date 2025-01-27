@@ -18,11 +18,10 @@ import GuarantorForm from './components/guarantorForm';
 
 const App = () => {
   return (
-    <ConfigProvider>
       <Router>
         <Routes>
           {/* Public Routes */}
-          <Route path="/" element={<LandingPage />} />
+          <Route path="/homepage" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
 
@@ -66,7 +65,6 @@ const App = () => {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>
-    </ConfigProvider>
   );
 };
 
